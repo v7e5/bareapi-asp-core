@@ -55,8 +55,8 @@ static class User {
     }
 
     if(o?._str("username") is string username) {
-      cmd.CommandText += " and username = :username ";
-      cmd.Parameters.AddWithValue("username", username);
+      cmd.CommandText += " and username like :username ";
+      cmd.Parameters.AddWithValue("username", $"%{username}%");
     }
 
     return Results.Ok(cmd.ExecuteReader().ToDictArray());
