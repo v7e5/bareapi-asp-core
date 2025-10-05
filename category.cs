@@ -11,7 +11,9 @@ static class Category {
     int _i = 0;
     foreach(var ob in o.EnumerateArray()) {
       string? name = ob._str("name");
-      string? color = ob._str("color");
+      string? color = ob._str("color") is string c && c.StartsWith("#")
+        ? c.Substring(1) : ob._str("color");
+
       if((name, color) is (null, null)) {
         continue;
       }
@@ -77,7 +79,9 @@ static class Category {
 
     if(color is not null) {
       cmd.CommandText += " color = :color ,";
-      cmd.Parameters.AddWithValue("color", color);
+      cmd.Parameters.AddWithValue("color",
+        color.StartsWith("#") ? color.Substring(1): color
+      );
     }
 
     cmd.CommandText = cmd.CommandText.TrimEnd(',');
