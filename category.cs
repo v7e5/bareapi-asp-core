@@ -1,6 +1,12 @@
 static class Category {
 
-  public static IResult Create(SqliteConnection conn, JsonElement o) {
+  public static IResult Create(
+    Auth auth, SqliteConnection conn, JsonElement o
+  ) {
+    if(!auth.IsAdmin()) {
+      return Results.BadRequest(new {error = "verboten"});
+    }
+
     if(o.ValueKind is not JsonValueKind.Array) {
       return Results.BadRequest(new {error = "not an array"});
     }
@@ -34,7 +40,13 @@ static class Category {
     return Results.Ok();
   }
 
-  public static IResult List(SqliteConnection conn, JsonElement? o) {
+  public static IResult List(
+    Auth auth, SqliteConnection conn, JsonElement? o
+  ) {
+    if(!auth.IsAdmin()) {
+      return Results.BadRequest(new {error = "verboten"});
+    }
+
     using var cmd = conn.CreateCommand();
     cmd.CommandText = "select id, name, color from category where 1 ";
 
@@ -56,7 +68,13 @@ static class Category {
     return Results.Ok(cmd.ExecuteReader().ToDictArray());
   }
 
-  public static IResult Update(SqliteConnection conn, JsonElement o) {
+  public static IResult Update(
+    Auth auth, SqliteConnection conn, JsonElement o
+  ) {
+    if(!auth.IsAdmin()) {
+      return Results.BadRequest(new {error = "verboten"});
+    }
+
     long? id = o._long("id");
     if(id is null) {
       return Results.BadRequest(new {error = "need an id"});
@@ -94,7 +112,13 @@ static class Category {
     return Results.Ok();
   }
 
-  public static IResult Delete(SqliteConnection conn, JsonElement o) {
+  public static IResult Delete(
+    Auth auth, SqliteConnection conn, JsonElement o
+  ) {
+    if(!auth.IsAdmin()) {
+      return Results.BadRequest(new {error = "verboten"});
+    }
+
     long? id = o._long("id");
     if(id is null) {
       return Results.BadRequest(new {error = "need an id"});
