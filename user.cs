@@ -74,6 +74,10 @@ static class User {
       return Results.BadRequest(new {error = "need an id"});
     }
 
+    if(id == 1) {
+      return Results.BadRequest(new {error = "can't delete admin"});
+    }
+
     using var cmd = conn.CreateCommand();
     cmd.CommandText = "delete from user where id = :id";
     cmd.Parameters.AddWithValue("id", id);
