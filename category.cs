@@ -43,10 +43,6 @@ static class Category {
   public static IResult List(
     Auth auth, SqliteConnection conn, JsonElement? o
   ) {
-    if(!auth.IsAdmin()) {
-      return Results.BadRequest(new {error = "verboten"});
-    }
-
     using var cmd = conn.CreateCommand();
     cmd.CommandText = "select id, name, color from category where 1 ";
 
