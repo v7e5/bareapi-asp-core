@@ -21,6 +21,23 @@ The shell scripts in misc are intended to be run in a zsh shell on linux. They
 include convenience functions for building / executing as well as testing the
 routes using curl. Feel free to ignore them if they don't match your use case.
 
+## Usage
+- Create a new sqlite database with initdb.sql
+```shell
+cat ./initdb.sql | sqlite3 api.db
+```
+
+- Build and run like any dotnet core app, example on linux:.
+```shell
+# build
+dotnet build --source ${HOME}/.nuget/packages \
+  -r linux-x64 -c Release api.csproj
+
+# run
+./bin/Release/net9.0/linux-x64/api
+
+```
+
 ## Endpoints
 
 ### Unauthenticated endpoints
